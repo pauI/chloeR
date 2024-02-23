@@ -111,7 +111,6 @@ generate.couple.metrics <- function(metrics,values){
 #' @param max.missing.values.rate An integer indicating the maximum allowable rate of missing values (in percent) across all rasters when aggregating summaries (default is 100%).
 #' @param properties.file A filename for storing metadata about the performed operation. By default, a temporary file is generated but discarded upon completion.
 #' @examples
-#' \dontrun{
 #' sliding.windows(input.raster =system.file("data/sample.tif",
 #'                                            package = "chloe"),
 #'                 metrics = c("SHDI","HET"),
@@ -119,7 +118,6 @@ generate.couple.metrics <- function(metrics,values){
 #'                 output.csv = "sample_metrics.csv",
 #'                 dep = 5,
 #'                 interpolate = TRUE)
-#' }
 #' @export
 
 sliding.windows <- function( input.raster, metrics, sizes, distance.type = "FAST_GAUSSIAN", output.dir = NULL, output.csv = NULL, output.raster = NULL, dep = 1, interpolate = FALSE, distance.function = NULL, window.shape = NULL, friction.file = NULL, filters = NULL, unfilters = NULL,max.missing.values.rate = 100, properties.file = NULL){

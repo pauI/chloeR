@@ -53,6 +53,7 @@ get.java <- function() {
   }
   if(java_path=="")
     stop("Java path not configured. Install Java if it is not already installed. Else use 'set.java()' to configure the java executable path.")
+  return(java_path)
 }
 
 #' @title Set Java Path
@@ -72,5 +73,6 @@ run <- function(props,properties.file = NULL) {
   write(paste0("# ", Sys.time(), "\n", props), file=properties.file)
   jar.file = system.file("bin/Chloe5-0.0.1.jar", package = "chloe");
   chloe_cmd <- paste0(get.java()," -jar ",jar.file," ",properties.file);
+  print(chloe_cmd);
   system(chloe_cmd);
 }
