@@ -66,13 +66,21 @@ set.java <- function(java.path){
   writeConfigParam("java_path",java.path)
 }
 
-#' @keywords internal
-run <- function(props,properties.file = NULL) {
-  if( is.null(properties.file))
+write.params <- function(props, properties.file = NULL) {
+  if(is.null(properties.file))
     properties.file = tempfile(pattern = "chloe-", fileext = ".properties")
-  write(paste0("# ", Sys.time(), "\n", props), file=properties.file)
-  jar.file = system.file("bin/Chloe5-0.0.1.jar", package = "chloe");
-  chloe_cmd <- paste0(get.java()," -jar ",jar.file," ",properties.file);
-  print(chloe_cmd);
-  system(chloe_cmd);
+  if(!dir.exists(dirname(properties.file)))
+    dir.create(dirname(properties.file), recursive=TRUE)
+  write(paste0("# Chloe5 ", Sys.time(), "\n", props), file=properties.file)
+  return (properties.file)
+}
+
+#' @keywords internal
+run.chloe <- function(properties.files) {
+  for(pf in properties.files){
+    jar.file = system.file("bin/Chloe5-0.0.1.jar", package = "chloe");
+    chloe_cmd <- paste0(get.java(), " -jar ", jar.file, " ", pf);
+    print(chloe_cmd);
+    system(chloe_cmd);
+  }
 }
