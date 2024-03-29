@@ -1,10 +1,10 @@
-
+#####
 #' @keywords internal
 getConfigFile <- function(){
   return(paste0(tools::R_user_dir("chloe", which = "config"),"/chloe.conf"))
 }
 
-
+#####
 #' @keywords internal
 writeConfigParam <- function(paramName, paramValue) {
   configFileName = getConfigFile()
@@ -28,6 +28,7 @@ writeConfigParam <- function(paramName, paramValue) {
   close(con)
 }
 
+#####
 #' @keywords internal
 readConfigParam <- function(paramName) {
   configFileName = getConfigFile()
@@ -43,6 +44,7 @@ readConfigParam <- function(paramName) {
   return(unlist(strsplit(paramsList[[paramName]], split="="))[2])
 }
 
+#####
 get.java <- function() {
   java_path = readConfigParam("java_path")
   if(java_path=="") {
@@ -56,6 +58,7 @@ get.java <- function() {
   return(java_path)
 }
 
+#####
 #' @title Set Java Path
 #' @description Function to set the Java path in the configuration file.
 #' @param java.path Character string specifying the Java path.
@@ -66,6 +69,7 @@ set.java <- function(java.path){
   writeConfigParam("java_path",java.path)
 }
 
+#####
 write.params <- function(props, properties.file = NULL) {
   if(is.null(properties.file))
     properties.file = tempfile(pattern = "chloe-", fileext = ".properties")
@@ -75,6 +79,7 @@ write.params <- function(props, properties.file = NULL) {
   return (properties.file)
 }
 
+#####
 #' @keywords internal
 run.chloe <- function(properties.files) {
   for(pf in properties.files){

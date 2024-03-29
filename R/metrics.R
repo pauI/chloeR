@@ -1,3 +1,4 @@
+#####
 #' List available metrics for chloe library
 #'
 #' This function returns
@@ -24,8 +25,6 @@
 #'                                  # the specification of a couple of values
 #' }
 #' @export
-
-
 list.metrics <- function(type = NULL, process = NULL) {
   print(system.file("data/metrics.csv", package = "chloe"))
   metrics <- read.csv(system.file("data/metrics.csv", package = "chloe"), header = TRUE, sep = ";")
@@ -41,6 +40,7 @@ list.metrics <- function(type = NULL, process = NULL) {
   return(metrics[1:3])
 }
 
+#####
 #' Generate Value Metrics {#generate.value.metrics}
 #'
 #' Generates a single string containing all combinations of metric names and their corresponding values
@@ -55,7 +55,6 @@ list.metrics <- function(type = NULL, process = NULL) {
 #'   res <- generate.value.metrics(metrics, values)
 #' }
 #' @export
-
 generate.value.metrics <- function(metrics,values){
   value.metrics = ""
   for(m in metrics)
@@ -64,6 +63,7 @@ generate.value.metrics <- function(metrics,values){
   return(value.metrics)
 }
 
+#####
 #' Generate Couple Metrics {#generate.couple.metrics}
 #'
 #' Generates a single string containing all unique combinations of two different values of a given list of metrics
@@ -79,7 +79,6 @@ generate.value.metrics <- function(metrics,values){
 #'   res <- generate.couple.metrics(metrics, values)
 #' }
 #' @export
-
 generate.couple.metrics <- function(metrics,values){
   couple.metrics = ""
   for(m in metrics)
