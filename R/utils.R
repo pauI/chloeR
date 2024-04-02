@@ -152,3 +152,92 @@ distance <- function(
   # write and launch
   run.chloe(write.params(props, properties_file))
 }
+
+#####
+#RASTER FROM CSV
+raster.from.csv <- function(
+    input_csv,
+    variables,
+    entete = NULL,
+    ref_raster = NULL,
+    width = NULL,
+    height = NULL,
+    xmin = NULL,
+    ymin = NULL,
+    cellsize = NULL,
+    nodata_value = NULL,
+    crs = NULL,
+    output_raster = NULL,
+    output_folder = NULL,
+    output_prefix = NULL,
+    type_mime = "GEOTIFF",
+    properties_file = NULL) {
+
+  # Create the properties file content
+  props <- "treatment=raster_from_csv\n"
+  props <- paste0(props, "input_csv=", input_csv, "\n")
+  props <- paste0(props, "variables=", "{", paste(variables, collapse=";"), "}", "\n")
+  if(!is.null(entete)) {
+    props <- paste0(props, "entete=", entete, "\n")
+  }else if(!is.null(ref_raster)) {
+    props <- paste0(props, "ref_raster=", ref_raster, "\n")
+  }else{
+    props <- paste0(props, "width=", width, "\n")
+    props <- paste0(props, "height=", height, "\n")
+    props <- paste0(props, "xmin=", xmin, "\n")
+    props <- paste0(props, "ymin=", ymin, "\n")
+    props <- paste0(props, "cellsize=", cellsize, "\n")
+    if(!is.null(nodata_value)) props <- paste0(props, "nodata_value=", nodata_value, "\n")
+    if(!is.null(crs)) props <- paste0(props, "crs=", crs, "\n")
+  }
+  if(!is.null(output_raster)) {
+    props <- paste0(props, "output_raster=", output_raster, "\n")
+  }else{
+    props <- paste0(props, "output_folder=", output_folder, "\n")
+    if(!is.null(output_prefix)) props <- paste0(props, "output_prefix=", output_prefix, "\n")
+    props <- paste0(props, "type_mime=", type_mime, "\n")
+  }
+
+  # write and launch
+  run.chloe(write.params(props, properties_file))
+}
+
+#####
+#RASTER FROM SHAPEFILE
+raster.from.shapefile <- function(
+    input_shapefile,
+    attribute,
+    entete = NULL,
+    ref_raster = NULL,
+    xmin = NULL,
+    xmax = NULL,
+    ymin = NULL,
+    ymax = NULL,
+    cellsize = NULL,
+    fill_value = NULL,
+    nodata_value = NULL,
+    output_raster,
+    properties_file = NULL) {
+
+  # Create the properties file content
+  props <- "treatment=raster_from_shapefile\n"
+  props <- paste0(props, "input_shapefile=", input_shapefile, "\n")
+  props <- paste0(props, "attribute=", attribute, "\n")
+  if(!is.null(entete)) {
+    props <- paste0(props, "entete=", entete, "\n")
+  }else if(!is.null(ref_raster)) {
+    props <- paste0(props, "ref_raster=", ref_raster, "\n")
+  }else{
+    props <- paste0(props, "xmin=", xmin, "\n")
+    props <- paste0(props, "xmax=", xmax, "\n")
+    props <- paste0(props, "ymin=", ymin, "\n")
+    props <- paste0(props, "ymax=", ymax, "\n")
+    props <- paste0(props, "cellsize=", cellsize, "\n")
+  }
+  if(!is.null(fill_value)) props <- paste0(props, "fill_value=", fill_value, "\n")
+  if(!is.null(nodata_value)) props <- paste0(props, "nodata_value=", nodata_value, "\n")
+  props <- paste0(props, "output_raster=", output_raster, "\n")
+
+  # write and launch
+  run.chloe(write.params(props, properties_file))
+}
