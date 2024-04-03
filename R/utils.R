@@ -16,7 +16,7 @@
 #' @param nodata_value An optional numeric value representing NoData cells in both
 #'   input and output rasters. If not specified, NoData cells won't be modified.
 #'
-#' @param properties_file An optional path to a JSON properties file used to store
+#' @param properties_file An optional path to a properties file used to store
 #'   metadata about the processing performed by this function. If not specified, no
 #'   properties file will be generated.
 #'
@@ -24,7 +24,7 @@
 #'
 #' @examples
 #' \dontrun{
-#' search_and_replace("path/to/input_raster.tif", list(c(1,5), c(7,3)), "path/to/output_raster.tif")
+#' search.replace("path/to/input_raster.tif", list(c(1,5), c(7,3)), "path/to/output_raster.tif")
 #' }
 #' @export
 search.replace <- function(
@@ -53,6 +53,33 @@ search.replace <- function(
 
 #####
 #CLASSIFICATION
+#' Classify Pixel Values Based on Domain Intervals
+#'
+#' This function takes an input raster and applies custom classifications defined by
+#' intervals of pixel values. Each interval is represented by a vector containing
+#' two numbers - minimum and maximum values - followed by a single number indicating
+#' the classification value.
+#'
+#' @param input_raster A path to the input raster file as a character string or
+#'   a Raster* object from which the filename will be extracted using \code{input_raster@filename}.
+#'
+#' @param domains A list of vectors where each vector contains three integers:
+#'   the lower bound of the range (minimum), the upper bound of the range (maximum),
+#'   and the new value assigned to all pixels within this range.
+#'
+#' @param output_raster A path to the output raster file as a character string.
+#'
+#' @param properties_file An optional path to a properties file used to store
+#'   metadata about the processing performed by this function. If not specified, no
+#'   properties file will be generated.
+#'
+#' @return Invisible null value invisibly when successful. Otherwise, throws an error.
+#'
+#' @examples
+#' \dontrun{
+#' classification("path/to/input_raster.tif", list(c(1, 5, 9), c(6, 10, 4)), "path/to/output_raster.tif")
+#' }
+#' @export
 classification <- function(
     input_raster,
     domains,
@@ -77,6 +104,36 @@ classification <- function(
 
 #####
 #COMBINE
+#' Combine Multiple Factored Rasters Using Expression
+#'
+#' This function combines multiple factored rasters into one output raster using
+#' a predefined mathematical expression involving their labels. The labels should
+#' correspond to those specified in the 'factors' argument.
+#'
+#' @param factors A list of pairs consisting of a factor name (a unique identifier
+#'   for each raster) and a corresponding input raster file path.
+#'
+#' @param combination A textual representation of a valid arithmetic expression
+#'   combining the factor names with appropriate operators (+, -, *, /). Parentheses
+#'   can be used to group subexpressions together. Existing functions such as min(),
+#'   max(), sum(), mean(), median(), sd(), var(), log(), exp(), sqrt(), sin(), cos(),
+#'   tan(), abs(), floor(), ceil(), round(), sign(), etc. can also be applied to
+#'   individual factors or entire expressions.
+#'
+#' @param output_raster A path to the output raster file as a character string.
+#'
+#' @param properties_file An optional path to a properties file used to store
+#'   metadata about the processing performed by this function. If not specified, no
+#'   properties file will be generated.
+#'
+#' @examples
+#' \dontrun{
+#' combine(list(c('factor1', 'path/to/factor1_raster.tif'),
+#'               c('factor2', 'path/to/factor2_raster.tif')),
+#'         combination = '"factor1" * 2 + "factor2"^2',
+#'         output_raster = 'path/to/combined_raster.tif')
+#' }
+#' @export
 combine <- function(
     factors,
     combination,
@@ -129,6 +186,44 @@ cluster <- function(
 
 #####
 #DISTANCE
+#' Compute Distance From Source Pixels
+#'
+#' This function calculates the distance between every pixel in the input raster
+#' and a set of source pixels, whose indices are stored in 'distance_sources'.
+#' Distances can be calculated Euclidean ('EUCLIDEAN') or Functional ('FUNCTIONAL').
+#' When computing functional distances, they can be optionally weighted by a
+#' separate friction raster. Additionally, a maximum distance threshold can be
+#' imposed via the 'max_distance' parameter.
+#'
+#' @param input_raster A path to the input raster file as a character string or
+#'   a Raster* object from which the filename will be extracted using \code{input_raster@filename}.
+#'
+#' @param distance_sources A list of values specifying the source pixels
+#'   in the input raster.
+#'
+#' @param distance_type Either "EUCLIDEAN" or "FUNCTIONAL". Specifies whether to
+#'   compute Euclidean or Functional distances. Defaults to "EUCLIDEAN".
+#'
+#' @param friction_raster Optional path to a Friction Raster, which provides weights
+#'   affecting the cost of moving through different areas during the calculation
+#'   of Functional distances. Must match the dimensions and coordinate reference
+#'   system of the input raster. Set to NULL for EUCLIDEAN calculations.
+#'
+#' @param max_distance Optionally limit the computed distance to a certain value.
+#'   Ignored for 'EUCLIDEAN' computations. Setting it to a positive value enables
+#'   limiting the Functional distance computation up to the given limit.
+#'
+#' @param output_raster A path to the output raster file as a character string.
+#'
+#' @param properties_file An optional path to a JSON properties file used to store
+#'   metadata about the processing performed by this function. If not specified, no
+#'   properties file will be generated.
+#'
+#' @examples
+#' \dontrun{
+#' distance("path/to/input_raster.tif", c(1, 2, 3, 4), max_distance = 250, output_raster = "path/to/output_raster.tif")
+#' }
+#' @export
 distance <- function(
     input_raster,
     distance_sources,
