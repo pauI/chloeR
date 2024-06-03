@@ -6,11 +6,11 @@
 #'
 #' @param input_raster A string specifying the path to the input raster dataset(s) separated by commas.
 #' @param metrics A character vector specifying the names of the metrics to calculate within each window.
-#' @param shape When distance.type is defined to "THRESHOLD" or "WEIGHTED", one of the following values : "CIRCLE"(default), "SQUARE", "FUNCTIONAL". If "FUNCTIONAL" is used, parameter friction_file has to be defined.
 #' @param sizes An integer vector specifying the size(s) of the moving windows to use. For example, c(101,201) would consider two sets of windows, those with diameters of 101 pixels and 201 pixels.
 #' @param distance_type One of the following values : "THRESHOLD"(Default), "WEIGHTED", "FAST_GAUSSIAN" and "FAST_SQUARE". "WEIGHTED" can use the definition of distance.function parameter.
 #' @param distance_function When distance.type is defined to "WEIGHTED", a string specifing the weighting function. If not specified, the gaussian function "exp(-pow(distance, 2)/pow(dmax/2, 2))" is used.
-#' @param friction_file A string specifying the path to the input raster defining friction when "window_shape" is defined to "FUNCTIONAL".
+#' @param friction_raster A string specifying the path to the input raster defining friction when "window_shape" is defined to "FUNCTIONAL".
+#' @param shape When distance.type is defined to "THRESHOLD" or "WEIGHTED", one of the following values : "CIRCLE"(default), "SQUARE", "FUNCTIONAL". If "FUNCTIONAL" is used, parameter friction_raster has to be defined.
 #' @param displacement An integer representing the displacement factor for subsequent iterations (default is 1).
 #' @param interpolation A boolean indicating whether pixel values should be interpolated between displacement (default is FALSE).
 #' @param filters A numerical vector specifying the only values that are considered in the input raster. Use only one of the filters and unfilters parameters.
@@ -33,10 +33,10 @@ sliding.window <- function(
     input_raster,
     metrics,
     sizes,
-    shape = "CIRCLE",
     distance_type = "THRESHOLD",
     distance_function = NULL,
-    friction_file = NULL,
+    friction_raster = NULL,
+    shape = "CIRCLE",
     displacement = 1,
     interpolation = FALSE,
     filters = NULL,
@@ -61,9 +61,9 @@ sliding.window <- function(
     }else{
       props <- paste0(props, "distance_type=", distance_type, "\n")
     }
-    if(!is.null(friction_file)){
+    if(!is.null(friction_raster)){
       props <- paste0(props, "shape=FUNCTIONAL\n")
-      props <- paste0(props, "friction_file=", friction_file, "\n")
+      props <- paste0(props, "friction_raster=", friction_raster, "\n")
     }else if(shape=="FUNCTIONAL"){
       props <- paste0(props, "shape=CIRCLE\n")
     }else{
@@ -91,12 +91,12 @@ sliding.window <- function(
 #'
 #' @param input_raster A string specifying the path to the input raster dataset(s) separated by commas.
 #' @param metrics A character vector specifying the names of the metrics to calculate within each window.
-#' @param shape When distance.type is defined to "THRESHOLD" or "WEIGHTED", one of the following values : "CIRCLE"(default), "SQUARE", "FUNCTIONAL". If "FUNCTIONAL" is used, parameter friction_file has to be defined.
+#' @param shape When distance.type is defined to "THRESHOLD" or "WEIGHTED", one of the following values : "CIRCLE"(default), "SQUARE", "FUNCTIONAL". If "FUNCTIONAL" is used, parameter friction_raster has to be defined.
 #' @param sizes An integer vector specifying the size(s) of the moving windows to use. For example, c(101,201) would consider two sets of windows, those with diameters of 101 pixels and 201 pixels.
 #' @param points A string specifying the path to the points dataset(s) separated by commas and containing fields "ID"(String identifiyng the point), "X"(abscissa) adn "Y"(ordinate)
 #' @param distance_type One of the following values : "THRESHOLD"(Default), "WEIGHTED", "FAST_GAUSSIAN" and "FAST_SQUARE". "WEIGHTED" can use the definition of distance.function parameter.
 #' @param distance_function When distance.type is defined to "WEIGHTED", a string specifing the weighting function. If not specified, the gaussian function "exp(-pow(distance, 2)/pow(dmax/2, 2))" is used.
-#' @param friction_file A string specifying the path to the input raster defining friction when "window_shape" is defined to "FUNCTIONAL".
+#' @param friction_raster A string specifying the path to the input raster defining friction when "window_shape" is defined to "FUNCTIONAL".
 #' @param output_raster A filename for the output raster file if there is only one metric and one window size.
 #' @param output_csv A filename for storing the resulting table of calculated metrics. When left blank, no CSV file will be created.
 #' @param output_folder A directory name where processed rasters should be stored. Their name will be 'input_raster_filename'_{metric}_{size}.tif (or .asc if input is .asc)
@@ -111,7 +111,7 @@ selected.window <- function(
     shape = "CIRCLE",
     distance_type = "THRESHOLD",
     distance_function = NULL,
-    friction_file = NULL,
+    friction_raster = NULL,
     output_raster = NULL,
     output_csv = NULL,
     output_folder = NULL,
@@ -130,9 +130,9 @@ selected.window <- function(
   }else{
     props <- paste0(props, "distance_type=", distance_type, "\n")
   }
-  if(!is.null(friction_file)){
+  if(!is.null(friction_raster)){
     props <- paste0(props, "shape=FUNCTIONAL\n")
-    props <- paste0(props, "friction_file=", friction_file, "\n")
+    props <- paste0(props, "friction_raster=", friction_raster, "\n")
   }else if(shape=="FUNCTIONAL"){
     props <- paste0(props, "shape=CIRCLE\n")
   }else{
