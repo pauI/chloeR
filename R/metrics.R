@@ -60,7 +60,7 @@ generate.value.metrics <- function(metrics,values){
   for(m in metrics)
     for(v in values)
       value.metrics = paste0(value.metrics,";",m,"_",v)
-  return(value.metrics)
+  return(substring(value.metrics,2))
 }
 
 #####
@@ -86,7 +86,7 @@ generate.couple.metrics <- function(metrics,values){
       for(v2 in values)
         if(v2>v1)
           couple.metrics = paste0(couple.metrics,";",m,"_",v1,"-",v2)
-  return(couple.metrics)
+  return(substring(couple.metrics,2))
 }
 
 
