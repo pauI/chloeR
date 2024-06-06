@@ -100,6 +100,7 @@ eco.landscape <- function(
     scales,
     classes,
     output_folder,
+    xy_file = NULL,
     properties_file = NULL){
 
   # Create the properties file content
@@ -111,6 +112,9 @@ eco.landscape <- function(
     props <- paste0(props, "output_folder=", output_folder, "\n")
     treatment = "rupture"
   }
+  if(!is.null(xy_file))
+    props <- paste0(props, "xy_file=", xy_file, "\n")
+
 
   props <- paste0(props, "treatment=", treatment, "\n")
 
