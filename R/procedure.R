@@ -1,5 +1,13 @@
 #####
-#GRAIN BOCAGER
+#' @title Grain bocager
+#' @description Calculates the bocage grain.
+#' @param wood_removal Path to ESRI shapefile delimiting area where hedgerows would be removed.
+#' @param wood_planting Path to ESRI shapefile defining hedgerows that would be added to the territory.
+#' @param height_planting_attribute Field from 'wood_planting' shapefile that defines the height of hedgerows. Use param wood_height if no field exists
+#' @param wood_height height of planted hedgerows if height_planting_attribute not defined. Default height : 10 meters
+#' @details TODO
+#' @return None.
+#' @export
 grain.bocager <- function(
     territory = NULL,
     envelope = NULL,

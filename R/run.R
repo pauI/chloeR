@@ -45,6 +45,10 @@ readConfigParam <- function(paramName) {
 }
 
 #####
+#' @title Get Java Path
+#' @description Function to get the Java VM path used by Chloe.
+#' @return Java VM Path
+#' @export
 get.java <- function() {
   java_path = readConfigParam("java_path")
   if(java_path=="") {
@@ -70,6 +74,7 @@ set.java <- function(java.path){
 }
 
 #####
+#' @keywords internal
 write.params <- function(props, properties.file = NULL) {
   if(is.null(properties.file))
     properties.file = tempfile(pattern = "chloe-", fileext = ".properties")
