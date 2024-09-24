@@ -110,6 +110,7 @@ eco.landscape <- function(
     output_folder,
     xy_file = NULL,
     displacement = NULL,
+    factor = NULL,
     window_distance_type =NULL,
     properties_file = NULL){
 
@@ -126,6 +127,8 @@ eco.landscape <- function(
     props <- paste0(props, "xy_file=", xy_file, "\n")
   if(!is.null(displacement))
     props <- paste0(props, "displacement=", displacement, "\n")
+  if(!is.null(factor))
+    props <- paste0(props, "factor=", factor, "\n")
   if(!is.null(window_distance_type))
     props <- paste0(props, "window_distance_type=", window_distance_type, "\n")
 
