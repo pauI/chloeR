@@ -101,6 +101,7 @@ eco.landscape <- function(
     classes,
     output_folder,
     xy_file = NULL,
+    displacement = NULL,
     properties_file = NULL){
 
   # Create the properties file content
@@ -114,6 +115,8 @@ eco.landscape <- function(
   }
   if(!is.null(xy_file))
     props <- paste0(props, "xy_file=", xy_file, "\n")
+  if(!is.null(displacement))
+    props <- paste0(props, "displacement=", displacement, "\n")
 
 
   props <- paste0(props, "treatment=", treatment, "\n")
