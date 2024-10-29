@@ -5,6 +5,7 @@
 #' This function performs a sliding window analysis on a raster file, calculating user-specified metrics over specified window sizes. The results can optionally be saved as both TIF images and CSV tables.
 #'
 #' @param input_raster A string specifying the path to the input raster dataset(s) separated by commas.
+#' @param input_tile_raster A string specifying the path to the folder of tiled rasters dataset.
 #' @param metrics A character vector specifying the names of the metrics to calculate within each window.
 #' @param sizes An integer vector specifying the size(s) of the moving windows to use. For example, c(101,201) would consider two sets of windows, those with diameters of 101 pixels and 201 pixels.
 #' @param distance_type One of the following values : "THRESHOLD"(Default), "WEIGHTED", "FAST_GAUSSIAN" and "FAST_SQUARE". "WEIGHTED" can use the definition of distance.function parameter.
@@ -30,7 +31,8 @@
 #'                 interpolation = TRUE)
 #' @export
 sliding.window <- function(
-    input_raster,
+    input_raster = NULL,
+    input_tile_raster = NULL,
     metrics,
     sizes,
     distance_type = "THRESHOLD",
@@ -49,7 +51,11 @@ sliding.window <- function(
 
   # Create the properties file content
   props <- "treatment=sliding\n"
-  props <- paste0(props, "input_raster=", "{", paste(input_raster,collapse=";"), "}", "\n")
+  if(!is.null(input_raster)){
+    props <- paste0(props, "input_raster=", "{", paste(input_raster,collapse=";"), "}", "\n")
+  }else if(!is.null(input_tile_raster)){
+    props <- paste0(props, "input_tile_raster=", input_tile_raster, "\n")
+  }
   props <- paste0(props, "metrics=", "{", paste(metrics,collapse=";"), "}", "\n")
   props <- paste0(props, "sizes=", "{", paste(sizes,collapse=";"), "}", "\n")
   if(distance_type=="FAST_GAUSSIAN" | distance_type=="FAST_SQUARE"){
