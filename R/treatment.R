@@ -41,6 +41,7 @@ sliding.window <- function(
     shape = "CIRCLE",
     displacement = 1,
     interpolation = FALSE,
+    values = NULL,
     filters = NULL,
     unfilters = NULL,
     maximum_rate_nodata_value = 100,
@@ -78,6 +79,7 @@ sliding.window <- function(
   }
   if(displacement != 1) props <- paste0(props, "displacement=", displacement, "\n")
   if(displacement != 1) props <- paste0(props, "interpolation=", if(interpolation) "true" else "false", "\n")
+  if(!is.null(values)) props <- paste0(props, "values=", "{", paste(values,collapse=";"), "}", "\n")
   if(!is.null(filters)) props <- paste0(props, "filters=", "{", paste(filters,collapse=";"), "}", "\n")
   if(!is.null(unfilters)) props <- paste0(props, "unfilters=", "{", paste(unfilters,collapse=";"), "}", "\n")
   if(maximum_rate_nodata_value != 100) props <- paste0(props, "maximum_rate_nodata_value=", maximum_rate_nodata_value, "\n")
