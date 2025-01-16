@@ -185,6 +185,22 @@ cluster <- function(
 }
 
 #####
+#OVERLAY
+overlay <- function(
+    input_raster,
+    output_raster,
+    properties_file = NULL) {
+
+  # Create the properties file content
+  props <- "treatment=overlay\n"
+  props <- paste0(props, "input_raster=", "{", paste(input_raster, collapse=";"), "}", "\n")
+  props <- paste0(props, "output_raster=", output_raster, "\n")
+
+  # write and launch
+  run.chloe(write.params(props, properties_file))
+}
+
+#####
 #DISTANCE
 #' Compute Distance From Source Pixels
 #'
