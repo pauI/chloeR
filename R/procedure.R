@@ -104,6 +104,7 @@ grain.bocager <- function(
 #####
 # ECOLANDSCAPE
 eco.landscape <- function(
+    treatment = "mapping",
     input_raster,
     scales,
     classes,
@@ -121,7 +122,6 @@ eco.landscape <- function(
   props <- paste0(props, "classes=", "{", paste(classes,collapse=";"), "}", "\n")
   if(!is.null(output_folder)){
     props <- paste0(props, "output_folder=", output_folder, "\n")
-    treatment = "rupture"
   }
   if(!is.null(xy_file))
     props <- paste0(props, "xy_file=", xy_file, "\n")
