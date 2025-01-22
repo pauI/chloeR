@@ -108,6 +108,7 @@ eco.landscape <- function(
     input_raster,
     scales,
     classes,
+    codes = NULL,
     output_folder,
     xy_file = NULL,
     displacement = NULL,
@@ -120,6 +121,9 @@ eco.landscape <- function(
   props <- paste0(props, "input_raster=", input_raster, "\n")
   props <- paste0(props, "scales=", "{", paste(scales,collapse=";"), "}", "\n")
   props <- paste0(props, "classes=", "{", paste(classes,collapse=";"), "}", "\n")
+  if(!is.null(codes)){
+    props <- paste0(props, "codes=", "{", paste(codes,collapse=";"), "}", "\n")
+  }
   if(!is.null(output_folder)){
     props <- paste0(props, "output_folder=", output_folder, "\n")
   }
