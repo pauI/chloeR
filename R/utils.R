@@ -29,14 +29,16 @@
 #' @export
 search.replace <- function(
     input_raster,
-    changes,
+    changes= NULL,
     nodata_value= NULL,
     output_raster,
     properties_file = NULL) {
 
   # Create the properties file content
   props <- "treatment=search_and_replace\n"
-  props <- paste0(props, "input_raster=", "{", paste(input_raster,collapse=";"), "}", "\n")
+  #props <- paste0(props, "input_raster=", "{", paste(input_raster,collapse=";"), "}", "\n")
+  props <- paste0(props, "input_raster=", input_raster, "\n")
+
   props <- paste0(props, "changes={")
   sc=""
   for(c in changes) {
