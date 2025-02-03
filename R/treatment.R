@@ -46,6 +46,7 @@ sliding.window <- function(
     unfilters = NULL,
     maximum_rate_nodata_value = 100,
     output_raster = NULL,
+    type_mime = NULL, # GEOTIFF (default) or ASCII_GRID
     output_csv = NULL,
     output_folder = NULL,
     properties_file = NULL){
@@ -84,6 +85,7 @@ sliding.window <- function(
   if(!is.null(unfilters)) props <- paste0(props, "unfilters=", "{", paste(unfilters,collapse=";"), "}", "\n")
   if(maximum_rate_nodata_value != 100) props <- paste0(props, "maximum_rate_nodata_value=", maximum_rate_nodata_value, "\n")
   if(!is.null(output_raster)) props <- paste0(props, "output_raster=", output_raster, "\n")
+  if(!is.null(type_mime)) props <- paste0(props, "type_mime=", type_mime, "\n")
   if(!is.null(output_csv)) props <- paste0(props, "output_csv=", output_csv, "\n")
   if(!is.null(output_folder)) props <- paste0(props, "output_folder=", output_folder, "\n")
 
