@@ -141,3 +141,78 @@ eco.landscape <- function(
   # write and launch
   run.chloe(write.params(props, properties_file))
 }
+
+#####
+#erosion
+erosion <- function(
+    treatment = "erosion_calculation",
+    infiltration_map_file,
+    erodibility_map_file,
+    displacement = 1,
+    territory_shape,
+    territory_id_attribute,
+    territory_id_values,
+    elevation_folder,
+    os_source,
+    surface_wood_shape,
+    surface_wood_attribute,
+    surface_wood_code,
+    linear_wood_shape,
+    linear_wood_code,
+    linear_road_shape,
+    linear_road_attribute,
+    linear_road_code,
+    linear_train_shape,
+    linear_train_code,
+    surface_water_shape,
+    surface_water_code,
+    linear_water_shape,
+    linear_water_code,
+    output_folder,
+    output_prefix,
+    properties_file = NULL){
+
+  # Create the properties file content
+  props <- "procedure=erosion\n"
+  props <- paste0(props, "infiltration_map_file=", infiltration_map_file, "\n")
+  props <- paste0(props, "erodibility_map_file=", erodibility_map_file, "\n")
+  props <- paste0(props, "displacement=", displacement, "\n")
+  props <- paste0(props, "territory_shape=", territory_shape, "\n")
+  props <- paste0(props, "territory_id_attribute=", territory_id_attribute, "\n")
+  props <- paste0(props, "territory_id_values=", "{", paste(territory_id_values,collapse=";"), "}", "\n")
+  props <- paste0(props, "elevation_folder=", "{", paste(elevation_folder,collapse=";"), "}", "\n")
+  props <- paste0(props, "os_source=", os_source, "\n")
+  props <- paste0(props, "surface_wood_shape=", paste(surface_wood_shape,collapse=";"), "}", "\n")
+  props <- paste0(props, "surface_wood_attribute=", surface_wood_attribute, "\n")
+  props <- paste0(props, "surface_wood_code={")
+  sc=""
+  for(c in surface_wood_code) {
+    props <- paste0(props, sc, "(", c[1], ",", c[2], ")")
+    if(sc=="") sc=";"
+  }
+  props <- paste0(props, "}\n")
+  props <- paste0(props, "linear_wood_shape=", paste(linear_wood_shape,collapse=";"), "}", "\n")
+  props <- paste0(props, "linear_wood_code=", linear_wood_code, "\n")
+  props <- paste0(props, "linear_road_shape=", paste(linear_road_shape,collapse=";"), "}", "\n")
+  props <- paste0(props, "linear_road_attribute=", linear_road_attribute, "\n")
+  props <- paste0(props, "linear_road_code={")
+  sc=""
+  for(c in linear_road_code) {
+    props <- paste0(props, sc, "(", c[1], ",", c[2], ")")
+    if(sc=="") sc=";"
+  }
+  props <- paste0(props, "}\n")
+  props <- paste0(props, "linear_train_shape=", paste(linear_train_shape,collapse=";"), "}", "\n")
+  props <- paste0(props, "linear_train_code=", linear_train_code, "\n")
+  props <- paste0(props, "surface_water_shape=", paste(surface_water_shape,collapse=";"), "}", "\n")
+  props <- paste0(props, "surface_water_code=", surface_water_code, "\n")
+  props <- paste0(props, "linear_water_shape=", paste(linear_water_shape,collapse=";"), "}", "\n")
+  props <- paste0(props, "linear_water_code=", linear_water_code, "\n")
+  props <- paste0(props, "output_folder=", output_folder, "\n")
+  props <- paste0(props, "output_prefix=", output_prefix, "\n")
+
+  props <- paste0(props, "treatment=", treatment, "\n")
+
+  # write and launch
+  run.chloe(write.params(props, properties_file))
+}
