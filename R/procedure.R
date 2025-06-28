@@ -1,12 +1,37 @@
 #####
-#' @title Grain bocager
-#' @description Calculates the bocage grain.
-#' @param wood_removal Path to ESRI shapefile delimiting area where hedgerows would be removed.
-#' @param wood_planting Path to ESRI shapefile defining hedgerows that would be added to the territory.
-#' @param height_planting_attribute Field from 'wood_planting' shapefile that defines the height of hedgerows. Use param wood_height if no field exists
-#' @param wood_height height of planted hedgerows if height_planting_attribute not defined. Default height : 10 meters
-#' @details TODO
-#' @return None.
+#' Calculate bocage grain indicators
+#'
+#' Runs a procedure to compute the bocage grain and related metrics over a territory,
+#' considering hedgerow planting/removal scenarios, thresholds, and functional clustering.
+#'
+#' @param territory String (optional). Path to a shapefile defining the analysis territory.
+#' @param envelope String (optional). Path to a shapefile defining an envelope for clipping.
+#' @param buffer_area Numeric. Buffer distance in meters (default: 0).
+#' @param bocage String (optional). Path to an input hedgerow shapefile.
+#' @param wood_removal String (optional). Path to shapefile defining hedgerows to be removed.
+#' @param wood_planting String (optional). Path to shapefile defining new hedgerows to be planted.
+#' @param height_planting_attribute String. Field name in `wood_planting` specifying height. Default: "hauteur".
+#' @param wood_height Numeric (optional). Default height of planted hedgerows if no attribute is defined.
+#' @param wood_type String (optional). Type of hedgerows to consider.
+#' @param influence_distance Numeric (optional). Influence distance for metrics calculation.
+#' @param thresholds Numeric vector. Threshold values for classification. Default: c(0.20, 0.33, 0.45).
+#' @param threshold Numeric. Selected threshold value. Default: 0.33.
+#' @param grain_bocager_window_radius Numeric. Window radius for grain calculation. Default: 250.
+#' @param grain_bocager_cellsize Numeric. Cell size for raster outputs. Default: 5.
+#' @param grain_bocager String (optional). Output path for grain result.
+#' @param grain_bocager_4classes String (optional). Output path for 4-class grain result.
+#' @param functional_grain_bocager String (optional). Output path for functional grain result.
+#' @param functional_grain_bocager_clustering String (optional). Output path for functional clustering result.
+#' @param issues_window_radius Numeric. Window radius for global issues calculation. Default: 1000.
+#' @param issues_cellsize Numeric. Cell size for global issues outputs. Default: 50.
+#' @param functional_grain_bocager_proportion String (optional). Output path for proportion result.
+#' @param functional_grain_bocager_fragmentation String (optional). Output path for fragmentation result.
+#' @param output_folder String (optional). Directory to store output files.
+#' @param output_prefix String. Prefix to add to output filenames.
+#' @param properties_file String (optional). File name to store metadata about the operation.
+#'
+#' @return No R object is returned. Output is written to disk.
+#'
 #' @export
 grain.bocager <- function(
     territory = NULL,
@@ -103,6 +128,26 @@ grain.bocager <- function(
 
 #####
 # ECOLANDSCAPE
+#' Perform ecolandscape analysis
+#'
+#' Runs an analysis computing landscape metrics over multiple scales and classes,
+#' exporting results to specified output folders.
+#'
+#' @param treatment String. Name of the last procedure to execute (default: "mapping", possible values, in order of execution : "calcul_metrics", "standardization", "clustering", "gradient", "mapping", "rupture").
+#' @param input_raster String. Path to the input land use raster file.
+#' @param scales Numeric vector. Scale values (e.g., moving window sizes).
+#' @param classes vector of strings. Numbers of ecolandscapes to produce.
+#' @param codes vector of strings (optional). Land cover values to include in the analysis. By default : all.
+#' @param output_folder String. Directory to store output files.
+#' @param xy_file String (optional). Path to a CSV file with XY locations for selected outputs.
+#' @param displacement Numeric (optional). Displacement value between windows.
+#' @param factor Numeric vector (optional). Scaling factor.
+#' @param window_distance_type String (optional). Type of distance function to use for windows : "gaussian" (default) or "square".
+#' @param properties_file String (optional). File name to store metadata about the operation.
+#'
+#' @return No R object is returned. Output is written to disk.
+#'
+#' @export
 eco.landscape <- function(
     treatment = "mapping",
     input_raster,
@@ -144,6 +189,41 @@ eco.landscape <- function(
 
 #####
 #erosion
+#' Perform erosion analysis
+#'
+#' Computes erosion risk or sediment delivery using infiltration, erodibility,
+#' elevation, and land cover data for a specified territory.
+#'
+#' @param treatment String. Name of the procedure to execute (default: "erosion_calculation").
+#' @param infiltration_map_file String. Path to the infiltration csv file to map infiltration coeficients to land use codes.
+#' @param erodibility_map_file String. Path to the erodibility csv file to map infiltration erodibility to land use codes.
+#' @param displacement Numeric. Displacement value for processing steps. Default: 1.
+#' @param territory_shape String. Path to the territory boundary shapefile.
+#' @param territory_id_attribute String. Field name identifying territory IDs.
+#' @param territory_id_values vector of strings. IDs of the territories to include.
+#' @param elevation_folder vector of strings. Paths to folders with elevation data.
+#' @param os_source String. Path to the land use raster file.
+#' @param surface_wood_shape vector of strings. Paths to surface wood shapefiles.
+#' @param surface_wood_attribute String. Field name for surface wood classification.
+#' @param surface_wood_code vector of strings. Code mappings for surface wood categories.
+#' @param linear_wood_shape vector of strings. Paths to linear wood shapefiles.
+#' @param linear_wood_code String. Code for linear wood features.
+#' @param linear_road_shape vector of strings. Paths to linear road shapefiles.
+#' @param linear_road_attribute String. Field name for road classification.
+#' @param linear_road_code vector of strings. Code mappings for road categories.
+#' @param linear_train_shape vector of strings. Paths to railway line shapefiles.
+#' @param linear_train_code String. Code for railway features.
+#' @param surface_water_shape vector of strings. Paths to surface water shapefiles.
+#' @param surface_water_code String. Code for surface water features.
+#' @param linear_water_shape vector of strings. Paths to linear watercourse shapefiles.
+#' @param linear_water_code String. Code for linear watercourse features.
+#' @param output_folder String. Directory to store output files.
+#' @param output_prefix String. Prefix to add to output filenames.
+#' @param properties_file String (optional). File name to store metadata about the operation.
+#'
+#' @return No R object is returned. Output is written to disk.
+#'
+#' @export
 erosion <- function(
     treatment = "erosion_calculation",
     infiltration_map_file,

@@ -2,26 +2,27 @@
 % Please edit documentation in R/metrics.R
 \name{generate.couple.metrics}
 \alias{generate.couple.metrics}
-\title{Generate Couple Metrics {#generate.couple.metrics}}
+\title{Generate Couple Metrics}
 \usage{
 generate.couple.metrics(metrics, values)
 }
 \arguments{
-\item{metrics}{A vector of strings representing metric names}
+\item{metrics}{vector of strings. Names of the metrics to combine with value pairs.}
 
-\item{values}{A vector of numbers representing the values associated with the given metrics}
+\item{values}{numeric vector. Values to generate unique pairs from.}
 }
 \value{
-A single string consisting of all unique combinations of two different values of the given metrics
-        separated by semicolon ";"
+A single string with all metric-couple combinations separated by semicolons.
 }
 \description{
-Generates a single string containing all unique combinations of two different values of a given list of metrics
+Generates a single string containing all unique combinations of two different
+values for each given metric, separated by semicolons.
 }
 \examples{
 \dontrun{
-  metrics <- c("pNC")
-  values <- c(1,2,3,4,5,6,7,8,9,10)
-  res <- generate.couple.metrics(metrics, values)
+metrics <- c("pNC")
+values <- c(1, 2, 3, 7, 8)
+res <- generate.couple.metrics(metrics, values)
 }
+
 }

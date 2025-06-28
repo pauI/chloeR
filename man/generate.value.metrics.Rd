@@ -2,26 +2,27 @@
 % Please edit documentation in R/metrics.R
 \name{generate.value.metrics}
 \alias{generate.value.metrics}
-\title{Generate Value Metrics {#generate.value.metrics}}
+\title{Generate Value Metrics}
 \usage{
 generate.value.metrics(metrics, values)
 }
 \arguments{
-\item{metrics}{A vector of strings representing metric names}
+\item{metrics}{vector of strings. Names of the metrics to combine with values.}
 
-\item{values}{A vector of numbers representing the values associated with the given metrics}
+\item{values}{numeric vector. Values to associate with the given metrics.}
 }
 \value{
-A single string consisting of all combinations of metric names and their corresponding values
-         separated by semicolon ";"
+A single string with all metric-value combinations separated by semicolons.
 }
 \description{
-Generates a single string containing all combinations of metric names and their corresponding values
+Generates a single string containing all combinations of metric names
+and their associated values, separated by semicolons.
 }
 \examples{
 \dontrun{
-  metrics <- c("pNV","pNV")
-  values <- c(1,2,3,4,5,6,7,8,9,10)
-  res <- generate.value.metrics(metrics, values)
+metrics <- c("NV", "pNV")
+values <- c(1, 2, 3, 4, 5, 6)
+res <- generate.value.metrics(metrics, values)
 }
+
 }
