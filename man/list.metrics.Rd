@@ -2,36 +2,32 @@
 % Please edit documentation in R/metrics.R
 \name{list.metrics}
 \alias{list.metrics}
-\title{List available metrics for chloe library}
+\title{List available metrics for the chloe library}
 \usage{
 list.metrics(type = NULL, process = NULL)
 }
 \arguments{
-\item{type}{A character vector specifying the type(s) of metric(s) to include
-in the output (defaults to NULL, which means no filtering by type).
-Available types are : "value", "couple", "quantitative", "patch",
-"slope", "continuity", "erosion", "degaterosion"}
+\item{type}{vector of strings (optional). Types of metrics to include in the output.
+Available types include: "value", "couple", "quantitative", "patch",
+"slope", "continuity", "erosion", "degaterosion".}
 
-\item{process}{A character vector specifying the process(es) associated with
-the desired metrics (defaults to NULL, which means no filtering
-by process). The metrics associated with "value" and "couple"
-processes have to be fullfiled with specific values eg.
-"pNV" value metric has to be associated with a value, eg. pNV_1,
-"pNC" couple metric has to be associated with two values, eg. pNC_1-2}
+\item{process}{vector of strings (optional). Process modes associated with the desired metrics.
+.       Available modes include: "value", "couple" and "other"
+       Metrics of type "value" and "couple" must be completed with specific values,
+       e.g., "pNV_1" for value metrics or "pNC_1-2" for couple metrics.}
 }
 \value{
 A data frame containing the requested metrics.
 }
 \description{
-This function returns
-a data frame with the requested subset of metrics based on the 'type' and
-'process' arguments. If no filters are provided, all metrics will be returned.
+Returns a data frame containing the available landscape metrics, optionally filtered
+by type or associated process.
 }
 \examples{
 \dontrun{
-list.metrics() # Returns all metrics from the 'metrics.csv' file
-list.metrics(type = "value") # Returns only value metrics
-list.metrics(process = "couple") # Returns only metrics needing
-                                 # the specification of a couple of values
+list.metrics() # Returns all available metrics
+list.metrics(type = "value") # Filters by type
+list.metrics(process = "couple") # Filters by process
 }
+
 }

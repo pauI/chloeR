@@ -1,34 +1,42 @@
 #####
 # SLIDING
-#' Perform sliding window analysis on raster datasets {#sliding.window}
+#' Perform sliding window analysis on raster datasets
 #'
-#' This function performs a sliding window analysis on a raster file, calculating user-specified metrics over specified window sizes. The results can optionally be saved as both TIF images and CSV tables.
+#' Applies a sliding window analysis to one or more raster datasets, calculating specified landscape metrics
+#' over defined window sizes and exporting results to raster files or CSV tables.
 #'
-#' @param input_raster A string specifying the path to the input raster dataset(s) separated by commas.
-#' @param input_tile_raster A string specifying the path to the folder of tiled rasters dataset.
-#' @param metrics A character vector specifying the names of the metrics to calculate within each window.
-#' @param sizes An integer vector specifying the size(s) of the moving windows to use. For example, c(101,201) would consider two sets of windows, those with diameters of 101 pixels and 201 pixels.
-#' @param distance_type One of the following values : "THRESHOLD"(Default), "WEIGHTED", "FAST_GAUSSIAN" and "FAST_SQUARE". "WEIGHTED" can use the definition of distance.function parameter.
-#' @param distance_function When distance.type is defined to "WEIGHTED", a string specifing the weighting function. If not specified, the gaussian function "exp(-pow(distance, 2)/pow(dmax/2, 2))" is used.
-#' @param friction_raster A string specifying the path to the input raster defining friction when "window_shape" is defined to "FUNCTIONAL".
-#' @param shape When distance.type is defined to "THRESHOLD" or "WEIGHTED", one of the following values : "CIRCLE"(default), "SQUARE", "FUNCTIONAL". If "FUNCTIONAL" is used, parameter friction_raster has to be defined.
-#' @param displacement An integer representing the displacement factor for subsequent iterations (default is 1).
-#' @param interpolation A boolean indicating whether pixel values should be interpolated between displacement (default is FALSE).
-#' @param filters A numerical vector specifying the only values that are considered in the input raster. Use only one of the filters and unfilters parameters.
-#' @param unfilters A numerical vector specifying the values that are not considered in the input raster.
-#' @param maximum_rate_nodata_value An integer indicating the maximum allowable rate of missing values (in percent) across all rasters when aggregating summaries (default is 100%).
-#' @param output_raster A filename for the output raster file if there is only one metric and one window size.
-#' @param output_csv A filename for storing the resulting table of calculated metrics. When left blank, no CSV file will be created.
-#' @param output_folder A directory name where processed rasters should be stored. Their name will be 'input_raster_filename'_{metric}_{size}.tif (or .asc if input is .asc)
-#' @param properties_file A filename for storing metadata about the performed operation. By default, a temporary file is generated but discarded upon completion.
-#' @examples
-#' sliding.window(input_raster =system.file("data/sample.tif",
-#'                                            package = "chloe"),
-#'                 metrics = c("SHDI","HET"),
-#'                 sizes = c(51,101),
-#'                 output_csv = "sample_metrics.csv",
-#'                 displacement = 5,
-#'                 interpolation = TRUE)
+#' @param input_raster String. Path to the input raster dataset(s), with multiple paths separated by commas.
+#' @param input_tile_raster String (optional). Path to a folder containing tiled raster datasets.
+#' @param metrics Vector of strings. Names of the landscape metrics to calculate within each window.
+#' @param sizes Integer vector. Size(s) of the moving windows in pixels (e.g., \code{c(101, 201)} for diameters of 101 and 201 pixels).
+#' @param distance_type String. Distance weighting method. One of: "THRESHOLD" (default), "WEIGHTED", "FAST_GAUSSIAN", "FAST_SQUARE".
+#' @param distance_function String (optional). Defines the weighting function (used only if \code{distance_type = "WEIGHTED"}). Defaults to Gaussian weighting: \code{exp(-distance^2 / (dmax/2)^2)}.
+#' @param friction_raster String (optional). Path to a raster defining friction values, required if \code{shape = "FUNCTIONAL"}.
+#' @param shape String. Window shape: "CIRCLE" (default), "SQUARE", or "FUNCTIONAL". If "FUNCTIONAL" is used, \code{friction_raster} must be specified.
+#' @param displacement Integer. Displacement step in pixels between windows (default: 1).
+#' @param interpolation Logical. If TRUE, interpolates pixel values between displacement steps (default: FALSE).
+#' @param values Numeric vector (optional). Specific values to extract from the raster.
+#' @param filters Numeric vector (optional). Values to include in the analysis. Use either \code{filters} or \code{unfilters}, not both.
+#' @param unfilters Numeric vector (optional). Values to exclude from the analysis.
+#' @param maximum_rate_nodata_value Integer. Maximum allowable percentage of NoData values in the window (default: 100).
+#' @param output_raster String (optional). File name for the single resulting raster if only one metric and one window size are specified.
+#' @param type_mime String (optional). Output raster format, e.g., "GEOTIFF" (default) or "ASCII_GRID".
+#' @param output_csv String (optional). File name for the CSV file with calculated metrics. If NULL, no CSV is created.
+#' @param output_folder String (optional). Directory where output rasters will be saved. Files will be named \code{input_raster_filename}_{metric}_{size}.tif (or .asc if input is ASCII).
+#' @param properties_file String (optional). File name to store metadata about the operation. Defaults to a temporary file that is discarded.
+#'
+#' @return No R object is returned. Output is written to disk.
+#'
+#' @example
+#' sliding.window(
+#'   input_raster = system.file("data/sample.tif", package = "chloe"),
+#'   metrics = c("SHDI", "HET"),
+#'   sizes = c(51, 101),
+#'   output_csv = "sample_metrics.csv",
+#'   displacement = 5,
+#'   interpolation = TRUE
+#' )
+#'
 #' @export
 sliding.window <- function(
     input_raster = NULL,
@@ -95,23 +103,37 @@ sliding.window <- function(
 
 #####
 # SELECTED
-#' Perform selected window analysis on raster datasets {#selected.window} using a points file ('ID';'X';'Y') as header
+#' Perform selected window analysis on raster datasets using a points file
 #'
-#' This function performs a selected window analysis on a raster file, calculating user-specified metrics over specified window sizes. The results can be saved as CSV tables.
+#' Applies a selected window analysis to raster datasets by calculating specified landscape metrics
+#' within windows centered on specified point locations. These point locations are stored in a CSV file with 'ID';'X';'Y' header.
+#' Results are saved as CSV tables and optional rasters.
 #'
-#' @param input_raster A string specifying the path to the input raster dataset(s) separated by commas.
-#' @param metrics A character vector specifying the names of the metrics to calculate within each window.
-#' @param shape When distance.type is defined to "THRESHOLD" or "WEIGHTED", one of the following values : "CIRCLE"(default), "SQUARE", "FUNCTIONAL". If "FUNCTIONAL" is used, parameter friction_raster has to be defined.
-#' @param sizes An integer vector specifying the size(s) of the moving windows to use. For example, c(101,201) would consider two sets of windows, those with diameters of 101 pixels and 201 pixels.
-#' @param points A string specifying the path to the points dataset(s) separated by commas and containing fields "ID"(String identifiyng the point), "X"(abscissa) adn "Y"(ordinate)
-#' @param distance_type One of the following values : "THRESHOLD"(Default), "WEIGHTED", "FAST_GAUSSIAN" and "FAST_SQUARE". "WEIGHTED" can use the definition of distance.function parameter.
-#' @param distance_function When distance.type is defined to "WEIGHTED", a string specifing the weighting function. If not specified, the gaussian function "exp(-pow(distance, 2)/pow(dmax/2, 2))" is used.
-#' @param friction_raster A string specifying the path to the input raster defining friction when "window_shape" is defined to "FUNCTIONAL".
-#' @param output_raster A filename for the output raster file if there is only one metric and one window size.
-#' @param output_csv A filename for storing the resulting table of calculated metrics. When left blank, no CSV file will be created.
-#' @param output_folder A directory name where processed rasters should be stored. Their name will be 'input_raster_filename'_{metric}_{size}.tif (or .asc if input is .asc)
-#' @param windows_path A directory name where stickers rasters would be stored.
-#' @param properties_file A filename for storing metadata about the performed operation. By default, a temporary file is generated but discarded upon completion.
+#' @param input_raster String. Path to the input raster dataset(s), with multiple paths separated by commas.
+#' @param metrics Vector of strings. Names of the landscape metrics to calculate within each window.
+#' @param sizes Integer vector. Size(s) of the moving windows in pixels (e.g., \code{c(101, 201)} for diameters of 101 and 201 pixels).
+#' @param points String. Path to a CSV file listing point coordinates with columns "ID", "X", and "Y".
+#' @param shape String. Window shape: "CIRCLE" (default), "SQUARE", or "FUNCTIONAL". If "FUNCTIONAL" is used, \code{friction_raster} must be specified.
+#' @param distance_type String. Distance weighting method. One of: "THRESHOLD" (default), "WEIGHTED", "FAST_GAUSSIAN", "FAST_SQUARE".
+#' @param distance_function String (optional). Defines the weighting function (used only if \code{distance_type = "WEIGHTED"}). Defaults to Gaussian weighting: \code{exp(-distance^2 / (dmax/2)^2)}.
+#' @param friction_raster String (optional). Path to a raster defining friction values, required if \code{shape = "FUNCTIONAL"}.
+#' @param output_raster String (optional). File name for the single resulting raster if only one metric and one window size are specified.
+#' @param output_csv String (optional). File name for the CSV file with calculated metrics. If NULL, no CSV is created.
+#' @param output_folder String (optional). Directory where output rasters will be saved. Files will be named \code{input_raster_filename}_{metric}_{size}.tif (or .asc if input is ASCII).
+#' @param windows_path String (optional). Directory where window mask rasters will be saved.
+#' @param properties_file String (optional). File name to store metadata about the operation. Defaults to a temporary file that is discarded.
+#'
+#' @return No R object is returned. Output is written to disk.
+#'
+#' @examples
+#' selected.window(
+#'   input_raster = system.file("data/sample.tif", package = "chloe"),
+#'   metrics = c("SHDI", "HET"),
+#'   sizes = c(51, 101),
+#'   points = "points.csv",
+#'   output_csv = "selected_metrics.csv"
+#' )
+#'
 #' @export
 selected.window <- function(
     input_raster,
@@ -159,18 +181,30 @@ selected.window <- function(
 
 #####
 # GRID
-#' Perform grid window analysis on raster datasets {#grid.window}
+#' Perform grid window analysis on raster datasets
 #'
-#' This function performs a grid window analysis on a raster file, calculating user-specified metrics over specified window sizes. The results can optionally be saved as both TIF images and CSV tables.
+#' Applies a grid window analysis to raster datasets, calculating specified landscape metrics
+#' over defined window sizes and exporting results to raster files or CSV tables.
 #'
-#' @param input_raster A string specifying the path to the input raster dataset(s) separated by commas.
-#' @param metrics A character vector specifying the names of the metrics to calculate within each window.
-#' @param sizes An integer vector specifying the size(s) of the moving windows to use. For example, c(101,201) would consider two sets of windows, those with diameters of 101 pixels and 201 pixels.
-#' @param maximum_rate_nodata_value An integer indicating the maximum allowable rate of missing values (in percent) across all rasters when aggregating summaries (default is 100%).
-#' @param output_raster A filename for the output raster file if there is only one metric and one window size.
-#' @param output_csv A filename for storing the resulting table of calculated metrics. When left blank, no CSV file will be created.
-#' @param output_folder A directory name where processed rasters should be stored. Their name will be 'input_raster_filename'_{metric}_{size}.tif (or .asc if input is .asc)
-#' @param properties_file A filename for storing metadata about the performed operation. By default, a temporary file is generated but discarded upon completion.
+#' @param input_raster String. Path to the input raster dataset(s), with multiple paths separated by commas.
+#' @param metrics Vector of strings. Names of the landscape metrics to calculate within each window.
+#' @param sizes Integer vector. Size(s) of the moving windows in pixels (e.g., \code{c(101, 201)} for diameters of 101 and 201 pixels).
+#' @param maximum_rate_nodata_value Integer. Maximum allowable percentage of NoData values in the window (default: 100).
+#' @param output_raster String (optional). File name for the single resulting raster if only one metric and one window size are specified.
+#' @param output_csv String (optional). File name for the CSV file with calculated metrics. If NULL, no CSV is created.
+#' @param output_folder String (optional). Directory where output rasters will be saved. Files will be named \code{input_raster_filename}_{metric}_{size}.tif (or .asc if input is ASCII).
+#' @param properties_file String (optional). File name to store metadata about the operation. Defaults to a temporary file that is discarded.
+#'
+#' @return No R object is returned. Output is written to disk.
+#'
+#' @examples
+#' grid.window(
+#'   input_raster = system.file("data/sample.tif", package = "chloe"),
+#'   metrics = c("SHDI", "HET"),
+#'   sizes = c(51, 101),
+#'   output_csv = "grid_metrics.csv"
+#' )
+#'
 #' @export
 grid.window <- function(
     input_raster,
@@ -195,16 +229,28 @@ grid.window <- function(
   # write and launch
   run.chloe(write.params(props, properties_file))
 }
+
 #####
 # MAP
-#' Perform map window analysis on raster datasets {#map.window}
+#' Perform map window analysis on raster datasets
 #'
-#' This function performs a sliding window analysis on a raster file, calculating user-specified metrics over specified window sizes. The results can optionally be saved as both TIF images and CSV tables.
+#' Applies a map-wide analysis to raster datasets, calculating specified landscape metrics
+#' over the entire extent without moving windows. Results are exported as CSV tables.
 #'
-#' @param input_raster A string specifying the path to the input raster dataset(s) separated by commas.
-#' @param metrics A character vector specifying the names of the metrics to calculate within each window.
-#' @param output_csv A filename for storing the resulting table of calculated metrics. When left blank, no CSV file will be created.
-#' @param properties_file A filename for storing metadata about the performed operation. By default, a temporary file is generated but discarded upon completion.
+#' @param input_raster String. Path to the input raster dataset(s), with multiple paths separated by commas.
+#' @param metrics Vector of strings. Names of the landscape metrics to calculate over the map extent.
+#' @param output_csv String (optional). File name for the CSV file with calculated metrics. If NULL, no CSV is created.
+#' @param properties_file String (optional). File name to store metadata about the operation. Defaults to a temporary file that is discarded.
+#'
+#' @return No R object is returned. Output is written to disk.
+#'
+#' @examples
+#' map.window(
+#'   input_raster = system.file("data/sample.tif", package = "chloe"),
+#'   metrics = c("SHDI", "HET"),
+#'   output_csv = "map_metrics.csv"
+#' )
+#'
 #' @export
 map.window <- function(
     input_raster,

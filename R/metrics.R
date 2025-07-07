@@ -1,29 +1,26 @@
 #####
-#' List available metrics for chloe library
+#' List available metrics for the chloe library
 #'
-#' This function returns
-#' a data frame with the requested subset of metrics based on the 'type' and
-#' 'process' arguments. If no filters are provided, all metrics will be returned.
+#' Returns a data frame containing the available landscape metrics, optionally filtered
+#' by type or associated process.
 #'
-#' @param type A character vector specifying the type(s) of metric(s) to include
-#'            in the output (defaults to NULL, which means no filtering by type).
-#'            Available types are : "value", "couple", "quantitative", "patch",
-#'            "slope", "continuity", "erosion", "degaterosion"
-#' @param process A character vector specifying the process(es) associated with
-#'               the desired metrics (defaults to NULL, which means no filtering
-#'               by process). The metrics associated with "value" and "couple"
-#'               processes have to be fullfiled with specific values eg.
-#'               "pNV" value metric has to be associated with a value, eg. pNV_1,
-#'               "pNC" couple metric has to be associated with two values, eg. pNC_1-2
+#' @param type vector of strings (optional). Types of metrics to include in the output.
+#'        Available types include: "value", "couple", "quantitative", "patch",
+#'        "slope", "continuity", "erosion", "degaterosion".
+#' @param process vector of strings (optional). Process modes associated with the desired metrics.
+#'.       Available modes include: "value", "couple" and "other"
+#'        Metrics of type "value" and "couple" must be completed with specific values,
+#'        e.g., "pNV_1" for value metrics or "pNC_1-2" for couple metrics.
 #'
 #' @return A data frame containing the requested metrics.
+#'
 #' @examples
 #' \dontrun{
-#' list.metrics() # Returns all metrics from the 'metrics.csv' file
-#' list.metrics(type = "value") # Returns only value metrics
-#' list.metrics(process = "couple") # Returns only metrics needing
-#'                                  # the specification of a couple of values
+#' list.metrics() # Returns all available metrics
+#' list.metrics(type = "value") # Filters by type
+#' list.metrics(process = "couple") # Filters by process
 #' }
+#'
 #' @export
 list.metrics <- function(type = NULL, process = NULL) {
   print(system.file("data/metrics.csv", package = "chloe"))
@@ -41,19 +38,23 @@ list.metrics <- function(type = NULL, process = NULL) {
 }
 
 #####
-#' Generate Value Metrics {#generate.value.metrics}
+#' Generate Value Metrics
 #'
-#' Generates a single string containing all combinations of metric names and their corresponding values
-#' @param metrics A vector of strings representing metric names
-#' @param values A vector of numbers representing the values associated with the given metrics
-#' @return A single string consisting of all combinations of metric names and their corresponding values
-#'          separated by semicolon ";"
+#' Generates a single string containing all combinations of metric names
+#' and their associated values, separated by semicolons.
+#'
+#' @param metrics vector of strings. Names of the metrics to combine with values.
+#' @param values numeric vector. Values to associate with the given metrics.
+#'
+#' @return A single string with all metric-value combinations separated by semicolons.
+#'
 #' @examples
 #' \dontrun{
-#'   metrics <- c("pNV","pNV")
-#'   values <- c(1,2,3,4,5,6,7,8,9,10)
-#'   res <- generate.value.metrics(metrics, values)
+#' metrics <- c("NV", "pNV")
+#' values <- c(1, 2, 3, 4, 5, 6)
+#' res <- generate.value.metrics(metrics, values)
 #' }
+#'
 #' @export
 generate.value.metrics <- function(metrics,values){
   value.metrics = ""
@@ -64,20 +65,23 @@ generate.value.metrics <- function(metrics,values){
 }
 
 #####
-#' Generate Couple Metrics {#generate.couple.metrics}
+#' Generate Couple Metrics
 #'
-#' Generates a single string containing all unique combinations of two different values of a given list of metrics
+#' Generates a single string containing all unique combinations of two different
+#' values for each given metric, separated by semicolons.
 #'
-#' @param metrics A vector of strings representing metric names
-#' @param values A vector of numbers representing the values associated with the given metrics
-#' @return A single string consisting of all unique combinations of two different values of the given metrics
-#'         separated by semicolon ";"
+#' @param metrics vector of strings. Names of the metrics to combine with value pairs.
+#' @param values numeric vector. Values to generate unique pairs from.
+#'
+#' @return A single string with all metric-couple combinations separated by semicolons.
+#'
 #' @examples
 #' \dontrun{
-#'   metrics <- c("pNC")
-#'   values <- c(1,2,3,4,5,6,7,8,9,10)
-#'   res <- generate.couple.metrics(metrics, values)
+#' metrics <- c("pNC")
+#' values <- c(1, 2, 3, 7, 8)
+#' res <- generate.couple.metrics(metrics, values)
 #' }
+#'
 #' @export
 generate.couple.metrics <- function(metrics,values){
   couple.metrics = ""
