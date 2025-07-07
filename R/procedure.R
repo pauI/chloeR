@@ -216,3 +216,29 @@ erosion <- function(
   # write and launch
   run.chloe(write.params(props, properties_file))
 }
+
+#####
+#regulation biologique Ephestia Toulouse
+regulation.ephestia.toulouse <- function(
+    cubist_model,
+    data_cover,
+    data_farm,
+    system_file,
+    ift_file,
+    meteo_file,
+    model_output,
+    properties_file = NULL){
+
+  # Create the properties file content
+  props <- "procedure=ephestia_toulouse\n"
+  props <- paste0(props, "cubist_model=", cubist_model, "\n")
+  props <- paste0(props, "data_cover=", data_cover, "\n")
+  props <- paste0(props, "data_farm=", data_farm, "\n")
+  props <- paste0(props, "system_file=", system_file, "\n")
+  props <- paste0(props, "ift_file=", ift_file, "\n")
+  props <- paste0(props, "meteo_file=", meteo_file, "\n")
+  props <- paste0(props, "model_output=", model_output, "\n")
+
+  # write and launch
+  run.chloe(write.params(props, properties_file))
+}
