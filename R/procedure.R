@@ -299,6 +299,21 @@ erosion <- function(
 
 #####
 #regulation biologique Ephestia Toulouse
+#' Perform biological regulation for Ephestia validated on Toulouse study area
+#'
+#' @param cubist_model String. Cubist statistical model to compute regulation
+#' @param data_cover String. Landcover map LULC
+#' @param data_farm String. Farm map
+#' @param system_file String. File to define which farm is organic (3) or conventional (1)
+#' @param ift_file String. File to define amount of treatment frequency index for each cover type
+#' @param meteo_file String. File to define fixed weather variables
+#' @param model_output String. Path to the output model map
+#' @param displacement Numeric (optional). Displacement value for processing steps. Default: 1.
+#' @param properties_file String (optional). File name to store metadata about the operation.
+#'
+#' @return No R object is returned. Output is written to disk.
+#'
+#' @export
 regulation.ephestia.toulouse <- function(
     cubist_model,
     data_cover,
@@ -307,6 +322,7 @@ regulation.ephestia.toulouse <- function(
     ift_file,
     meteo_file,
     model_output,
+    displacement = 1,
     properties_file = NULL){
 
   # Create the properties file content
@@ -318,6 +334,7 @@ regulation.ephestia.toulouse <- function(
   props <- paste0(props, "ift_file=", ift_file, "\n")
   props <- paste0(props, "meteo_file=", meteo_file, "\n")
   props <- paste0(props, "model_output=", model_output, "\n")
+  props <- paste0(props, "displacement=", displacement, "\n")
 
   # write and launch
   run.chloe(write.params(props, properties_file))
