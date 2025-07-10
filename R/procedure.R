@@ -154,6 +154,7 @@ eco.landscape <- function(
     scales,
     classes,
     codes = NULL,
+    unfilters = NULL,
     output_folder,
     xy_file = NULL,
     displacement = NULL,
@@ -168,6 +169,9 @@ eco.landscape <- function(
   props <- paste0(props, "classes=", "{", paste(classes,collapse=";"), "}", "\n")
   if(!is.null(codes)){
     props <- paste0(props, "codes=", "{", paste(codes,collapse=";"), "}", "\n")
+  }
+  if(!is.null(unfilters)){
+    props <- paste0(props, "unfilters=", "{", paste(unfilters,collapse=";"), "}", "\n")
   }
   if(!is.null(output_folder)){
     props <- paste0(props, "output_folder=", output_folder, "\n")
@@ -292,6 +296,49 @@ erosion <- function(
   props <- paste0(props, "output_prefix=", output_prefix, "\n")
 
   props <- paste0(props, "treatment=", treatment, "\n")
+
+  # write and launch
+  run.chloe(write.params(props, properties_file))
+}
+
+#####
+#regulation biologique Ephestia Toulouse
+#' Perform biological regulation for Ephestia validated on Toulouse study area
+#'
+#' @param cubist_model String. Cubist statistical model to compute regulation
+#' @param data_cover String. Landcover map LULC
+#' @param data_farm String. Farm map
+#' @param system_file String. File to define which farm is organic (3) or conventional (1)
+#' @param ift_file String. File to define amount of treatment frequency index for each cover type
+#' @param meteo_file String. File to define fixed weather variables
+#' @param model_output String. Path to the output model map
+#' @param displacement Numeric (optional). Displacement value for processing steps. Default: 1.
+#' @param properties_file String (optional). File name to store metadata about the operation.
+#'
+#' @return No R object is returned. Output is written to disk.
+#'
+#' @export
+regulation.ephestia.toulouse <- function(
+    cubist_model,
+    data_cover,
+    data_farm,
+    system_file,
+    ift_file,
+    meteo_file,
+    model_output,
+    displacement = 1,
+    properties_file = NULL){
+
+  # Create the properties file content
+  props <- "procedure=ephestia_toulouse\n"
+  props <- paste0(props, "cubist_model=", cubist_model, "\n")
+  props <- paste0(props, "data_cover=", data_cover, "\n")
+  props <- paste0(props, "data_farm=", data_farm, "\n")
+  props <- paste0(props, "system_file=", system_file, "\n")
+  props <- paste0(props, "ift_file=", ift_file, "\n")
+  props <- paste0(props, "meteo_file=", meteo_file, "\n")
+  props <- paste0(props, "model_output=", model_output, "\n")
+  props <- paste0(props, "displacement=", displacement, "\n")
 
   # write and launch
   run.chloe(write.params(props, properties_file))
