@@ -140,7 +140,7 @@ grain.bocager <- function(
 #' @param codes vector of strings (optional). Land cover values to include in the analysis. By default : all.
 #' @param output_folder String. Directory to store output files.
 #' @param xy_file String (optional). Path to a CSV file with XY locations for selected outputs.
-#' @param displacement Numeric (optional). Displacement value between windows.
+#' @param displacement Numeric (optional). Displacement value between windows in pixels.
 #' @param factor Numeric vector (optional). Scaling factor.
 #' @param window_distance_type String (optional). Type of distance function to use for windows : "gaussian" (default) or "square".
 #' @param properties_file String (optional). File name to store metadata about the operation.

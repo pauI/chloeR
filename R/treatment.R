@@ -27,7 +27,7 @@
 #'
 #' @return No R object is returned. Output is written to disk.
 #'
-#' @example
+#' @examples
 #' sliding.window(
 #'   input_raster = system.file("data/sample.tif", package = "chloe"),
 #'   metrics = c("SHDI", "HET"),
