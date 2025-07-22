@@ -89,7 +89,7 @@ write.params <- function(props, properties.file = NULL) {
 run.chloe <- function(properties.files) {
   for(pf in properties.files){
     jar.file = system.file("bin/Chloe5-0.0.1.jar", package = "chloe");
-    chloe_cmd <- paste0(get.java(), " -jar ", jar.file, " ", pf);
+    chloe_cmd <- paste0(get.java(), " -jar ", jar.file, " \"", pf, "\"");
     print(chloe_cmd);
     system(chloe_cmd);
   }
