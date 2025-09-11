@@ -164,7 +164,7 @@ eco.landscape <- function(
 
   # Create the properties file content
   props <- "procedure=ecolandscape\n"
-  props <- paste0(props, "input_raster=", input_raster, "\n")
+  props <- paste0(props, "input_raster=", "{", paste(input_raster,collapse=";"), "}", "\n")
   props <- paste0(props, "scales=", "{", paste(scales,collapse=";"), "}", "\n")
   props <- paste0(props, "classes=", "{", paste(classes,collapse=";"), "}", "\n")
   if(!is.null(codes)){
