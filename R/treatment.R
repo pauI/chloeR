@@ -113,6 +113,7 @@ sliding.window <- function(
 #' @param metrics Vector of strings. Names of the landscape metrics to calculate within each window.
 #' @param sizes Integer vector. Size(s) of the moving windows in pixels (e.g., \code{c(101, 201)} for diameters of 101 and 201 pixels).
 #' @param points String. Path to a CSV file listing point coordinates with columns "ID", "X", and "Y".
+#' @param values Numeric vector (optional). Specific values to extract from the raster.
 #' @param shape String. Window shape: "CIRCLE" (default), "SQUARE", or "FUNCTIONAL". If "FUNCTIONAL" is used, \code{friction_raster} must be specified.
 #' @param distance_type String. Distance weighting method. One of: "THRESHOLD" (default), "WEIGHTED", "FAST_GAUSSIAN", "FAST_SQUARE".
 #' @param distance_function String (optional). Defines the weighting function (used only if \code{distance_type = "WEIGHTED"}). Defaults to Gaussian weighting: \code{exp(-distance^2 / (dmax/2)^2)}.
@@ -140,6 +141,7 @@ selected.window <- function(
     metrics,
     sizes,
     points,
+    values = NULL,
     shape = "CIRCLE",
     distance_type = "THRESHOLD",
     distance_function = NULL,
@@ -170,6 +172,7 @@ selected.window <- function(
   }else{
     props <- paste0(props, "shape=", shape, "\n")
   }
+  if(!is.null(values)) props <- paste0(props, "values=", "{", paste(values,collapse=";"), "}", "\n")
   if(!is.null(output_raster)) props <- paste0(props, "output_raster=", output_raster, "\n")
   if(!is.null(output_csv)) props <- paste0(props, "output_csv=", output_csv, "\n")
   if(!is.null(output_folder)) props <- paste0(props, "output_folder=", output_folder, "\n")
