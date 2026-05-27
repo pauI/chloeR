@@ -75,8 +75,8 @@ set.java <- function(java.path){
 
 #####
 #' @title Set Local Preference
-#' @description Function to set local preference
-#' @param java.path Character string specifying the local preference .
+#' @description Function to set the local preference
+#' @param local Character string specifying the local preference.
 #' @details This function writes the local preference. available values are 'france' (default), 'england', ireland', 'chile' and 'new_zealand'.
 #' @return None.
 #' @export

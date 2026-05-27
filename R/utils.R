@@ -341,11 +341,13 @@ raster.from.shapefile <- function(
   }else if(!is.null(ref_raster)) {
     props <- paste0(props, "ref_raster=", ref_raster, "\n")
   }else{
-    props <- paste0(props, "xmin=", xmin, "\n")
-    props <- paste0(props, "xmax=", xmax, "\n")
-    props <- paste0(props, "ymin=", ymin, "\n")
-    props <- paste0(props, "ymax=", ymax, "\n")
     props <- paste0(props, "cellsize=", cellsize, "\n")
+    if(!is.null(xmin)){
+      props <- paste0(props, "xmin=", xmin, "\n")
+      props <- paste0(props, "xmax=", xmax, "\n")
+      props <- paste0(props, "ymin=", ymin, "\n")
+      props <- paste0(props, "ymax=", ymax, "\n")
+    }
   }
   if(!is.null(fill_value)) props <- paste0(props, "fill_value=", fill_value, "\n")
   if(!is.null(nodata_value)) props <- paste0(props, "nodata_value=", nodata_value, "\n")
