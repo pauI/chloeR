@@ -9,7 +9,10 @@ eco.landscape(
   input_raster,
   scales,
   classes,
-  codes = NULL,
+  codes,
+  composition = FALSE,
+  configuration = FALSE,
+  unfilters = NULL,
   output_folder,
   xy_file = NULL,
   displacement = NULL,
@@ -27,7 +30,13 @@ eco.landscape(
 
 \item{classes}{vector of strings. Numbers of ecolandscapes to produce.}
 
-\item{codes}{vector of strings (optional). Land cover values to include in the analysis. By default : all.}
+\item{codes}{vector of strings. Land cover values to include in the analysis. This parameter is currently mandatory.}
+
+\item{composition}{Logical. If TRUE, calculates composition metrics. Default: FALSE.}
+
+\item{configuration}{Logical. If TRUE, calculates configuration metrics. Default: FALSE.}
+
+\item{unfilters}{vector of strings (optional). Values to exclude from filtering.}
 
 \item{output_folder}{String. Directory to store output files.}
 

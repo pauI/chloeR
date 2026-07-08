@@ -137,7 +137,11 @@ grain.bocager <- function(
 #' @param input_raster String. Path to the input land use raster file.
 #' @param scales Numeric vector. Scale values (e.g., moving window sizes).
 #' @param classes vector of strings. Numbers of ecolandscapes to produce.
-#' @param codes vector of strings (optional). Land cover values to include in the analysis. By default : all.
+#' @param codes vector of strings. Land cover values to include in the analysis.
+#'   This parameter is currently mandatory.
+#' @param composition Logical. If TRUE, calculates composition metrics. Default: FALSE.
+#' @param configuration Logical. If TRUE, calculates configuration metrics. Default: FALSE.
+#' @param unfilters vector of strings (optional). Values to exclude from filtering.
 #' @param output_folder String. Directory to store output files.
 #' @param xy_file String (optional). Path to a CSV file with XY locations for selected outputs.
 #' @param displacement Numeric (optional). Displacement value between windows in pixels.
@@ -153,7 +157,9 @@ eco.landscape <- function(
     input_raster,
     scales,
     classes,
-    codes = NULL,
+    codes,
+    composition = FALSE,
+    configuration = FALSE,
     unfilters = NULL,
     output_folder,
     xy_file = NULL,
@@ -167,9 +173,9 @@ eco.landscape <- function(
   props <- paste0(props, "input_raster=", "{", paste(input_raster,collapse=";"), "}", "\n")
   props <- paste0(props, "scales=", "{", paste(scales,collapse=";"), "}", "\n")
   props <- paste0(props, "classes=", "{", paste(classes,collapse=";"), "}", "\n")
-  if(!is.null(codes)){
-    props <- paste0(props, "codes=", "{", paste(codes,collapse=";"), "}", "\n")
-  }
+  props <- paste0(props, "codes=", "{", paste(codes,collapse=";"), "}", "\n")
+  if(isTRUE(composition)) props <- paste0(props, "composition=TRUE\n")
+  if(isTRUE(configuration)) props <- paste0(props, "configuration=TRUE\n")
   if(!is.null(unfilters)){
     props <- paste0(props, "unfilters=", "{", paste(unfilters,collapse=";"), "}", "\n")
   }
