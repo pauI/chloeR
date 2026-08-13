@@ -272,7 +272,7 @@ erosion <- function(
   props <- paste0(props, "territory_id_values=", "{", paste(territory_id_values,collapse=";"), "}", "\n")
   props <- paste0(props, "elevation_folder=", "{", paste(elevation_folder,collapse=";"), "}", "\n")
   props <- paste0(props, "os_source=", os_source, "\n")
-  props <- paste0(props, "surface_wood_shape=", paste(surface_wood_shape,collapse=";"), "}", "\n")
+  props <- paste0(props, "surface_wood_shape={", paste(surface_wood_shape,collapse=";"), "}", "\n")
   props <- paste0(props, "surface_wood_attribute=", surface_wood_attribute, "\n")
   props <- paste0(props, "surface_wood_code={")
   sc=""
@@ -281,9 +281,9 @@ erosion <- function(
     if(sc=="") sc=";"
   }
   props <- paste0(props, "}\n")
-  props <- paste0(props, "linear_wood_shape=", paste(linear_wood_shape,collapse=";"), "}", "\n")
+  props <- paste0(props, "linear_wood_shape={", paste(linear_wood_shape,collapse=";"), "}", "\n")
   props <- paste0(props, "linear_wood_code=", linear_wood_code, "\n")
-  props <- paste0(props, "linear_road_shape=", paste(linear_road_shape,collapse=";"), "}", "\n")
+  props <- paste0(props, "linear_road_shape={", paste(linear_road_shape,collapse=";"), "}", "\n")
   props <- paste0(props, "linear_road_attribute=", linear_road_attribute, "\n")
   props <- paste0(props, "linear_road_code={")
   sc=""
@@ -292,11 +292,11 @@ erosion <- function(
     if(sc=="") sc=";"
   }
   props <- paste0(props, "}\n")
-  props <- paste0(props, "linear_train_shape=", paste(linear_train_shape,collapse=";"), "}", "\n")
+  props <- paste0(props, "linear_train_shape={", paste(linear_train_shape,collapse=";"), "}", "\n")
   props <- paste0(props, "linear_train_code=", linear_train_code, "\n")
-  props <- paste0(props, "surface_water_shape=", paste(surface_water_shape,collapse=";"), "}", "\n")
+  props <- paste0(props, "surface_water_shape={", paste(surface_water_shape,collapse=";"), "}", "\n")
   props <- paste0(props, "surface_water_code=", surface_water_code, "\n")
-  props <- paste0(props, "linear_water_shape=", paste(linear_water_shape,collapse=";"), "}", "\n")
+  props <- paste0(props, "linear_water_shape={", paste(linear_water_shape,collapse=";"), "}", "\n")
   props <- paste0(props, "linear_water_code=", linear_water_code, "\n")
   props <- paste0(props, "output_folder=", output_folder, "\n")
   props <- paste0(props, "output_prefix=", output_prefix, "\n")
